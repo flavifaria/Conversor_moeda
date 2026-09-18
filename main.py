@@ -1,3 +1,7 @@
+from tkinter import messagebox
+from utils.janela_utils import centralizar_janela
+from utils.sobre import mostrar_sobre
+
 import customtkinter as ctk
 
 from pegar_moedas import nome_moedas
@@ -7,23 +11,14 @@ from pegar_conversoes import pegar_conversoes
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("green")
 
-def centralizar_janela(janela, largura=600, altura=400):
-    largura_tela = janela.winfo_screenwidth()
-    altura_tela = janela.winfo_screenheight()
-    
-    pos_x = (largura_tela // 2) - (largura // 2)
-    pos_y = (altura_tela // 2) - (altura // 2)
-    
-    janela.geometry(f"{largura}x{altura}+{pos_x}+{pos_y}")
-
-
 janela = ctk.CTk()
 centralizar_janela(janela, largura=500, altura=700)
 janela.title("Conversor de Moeda")  # Define o título que aparece na janela
 
+janela.resizable(False, False)
 
 
-titulo = ctk.CTkLabel(janela, text="Conversor de Moeda", font=("Arial", 20))
+titulo = ctk.CTkLabel(janela, text="Conversor de Moeda", font=ctk.CTkFont(size=20, weight="bold"))
 
 texto_moeda_origem = ctk.CTkLabel(janela, text="Selecione a moeda de origem:")
 campo_origem = ctk.CTkComboBox(janela, values=list(conversoes_disponiveis().keys()))
@@ -35,6 +30,15 @@ texto_valor = ctk.CTkLabel(janela, text="Digite o valor:")
 campo_valor = ctk.CTkEntry(janela, placeholder_text="Ex.: 100,00")
 
 resultado = ctk.CTkLabel(janela, text="")
+
+botao_sobre = ctk.CTkButton(
+    master=janela,
+    text="?",
+    width=30,          
+    height=30,         
+    corner_radius=15,  
+    command=mostrar_sobre
+)
 
 def converter_moeda():
     moeda_origem = campo_origem.get().strip().upper()
@@ -91,5 +95,6 @@ campo_valor.pack(pady=10)
 botao_converter.pack(pady=10, padx=10)
 resultado.pack(pady=10, padx=10)
 lista_moedas.pack(pady=10, padx=10)
+botao_sobre.place(relx=1.0, rely=1.0, x=-15, y=-15, anchor="se")
 
 janela.mainloop()
