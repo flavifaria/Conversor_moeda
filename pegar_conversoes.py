@@ -1,10 +1,11 @@
 import requests
 
-requisicao = requests.get("https://economia.awesomeapi.com.br/json/last/USD-BRLT")
+def pegar_conversoes(moeda_base):
+    url = f"https://api.exchangerate-api.com/v4/latest/{moeda_base}"
 
-def pegar_conversoes():
-    if requisicao.status_code == 200:
-        conversao = requisicao.json()
-        return conversao
-    else:
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        return response.json()["rates"]
+    except (requests.RequestException, ValueError, KeyError):
         return None
